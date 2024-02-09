@@ -23,3 +23,9 @@ export const Button = styled.button`
         background-color: blue;
     }
 `
+
+export const P = styled.p`
+    font-size: 1.02em;
+    margin-bottom: 0.7em;
+    color: green;
+`

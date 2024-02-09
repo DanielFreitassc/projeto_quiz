@@ -1,5 +1,47 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
+
+
+const LeaderBoard = () => {
+
+  const [ranking, setRanking] = useState([])
+
+  useEffect(() => {
+    const fetchUser = async() => {
+      const res = await fetch('https://backend-quiz-7j7n.onrender.com/usuario')
+
+      const data = await res.json()
+
+      console.log(data)
+      setRanking(data)
+    }
+
+    fetchUser()
+  },[])
+
+  return (
+    <StyledTable>
+      <thead>
+        <StyledTr>
+          <StyledTh>Nome</StyledTh>
+          <StyledTh>Pontuação</StyledTh>
+        </StyledTr>
+      </thead>
+      <tbody>
+        {ranking.map((pessoa) => (
+        <StyledTr key={pessoa.id}>
+          <StyledTd>{pessoa.nome}</StyledTd>
+          <StyledTd>{pessoa.pontos}</StyledTd>
+        </StyledTr>
+        ))}
+      </tbody>
+    </StyledTable>
+  );
+};
+
+export default LeaderBoard;
+
 
 const StyledTable = styled.table`
   width: 100%;
@@ -23,32 +65,3 @@ const StyledTr = styled.tr`
     background-color: #f9f9f9;
   }
 `;
-
-const LeaderBoard = () => {
-  return (
-    <StyledTable>
-      <thead>
-        <StyledTr>
-          <StyledTh>Nome</StyledTh>
-          <StyledTh>Pontuação</StyledTh>
-        </StyledTr>
-      </thead>
-      <tbody>
-        <StyledTr>
-          <StyledTd>Zezinho</StyledTd>
-          <StyledTd>100</StyledTd>
-        </StyledTr>
-        <StyledTr>
-          <StyledTd>Zezinho</StyledTd>
-          <StyledTd>100</StyledTd>
-        </StyledTr>
-        <StyledTr>
-          <StyledTd>Zezinho</StyledTd>
-          <StyledTd>100</StyledTd>
-        </StyledTr>
-      </tbody>
-    </StyledTable>
-  );
-};
-
-export default LeaderBoard;

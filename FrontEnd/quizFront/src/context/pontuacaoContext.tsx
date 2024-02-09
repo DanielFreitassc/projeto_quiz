@@ -3,6 +3,7 @@ import { createContext, useContext, useState, ReactNode } from "react";
 interface PontuacaoContext {
     pontuacao: number;
     aumentarPontuacao: () => void;
+    setPontuacao: (arg0: number) => void
 }
 
 interface PontuacaoProviderProps {
@@ -21,6 +22,7 @@ const PontuacaoProvider: React.FC<PontuacaoProviderProps> = ({ children }) => {
     const contextValue: PontuacaoContext = {
         pontuacao,
         aumentarPontuacao,
+        setPontuacao
     };
 
     return (
