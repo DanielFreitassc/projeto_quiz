@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import { usePontuacao } from '../../context/pontuacaoContext';
 import { useMessage } from '../../context/mensagemContext';
 import { useNome } from '../../context/nomeContext';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'
+
 
 interface QuestaoInterface {
   texto:string
@@ -63,10 +66,8 @@ const Questao = () => {
 
     const dataShuffle = shuffle([data.respostaCorreta, data.respostaErradaUm,data.respostaErradaDois, data.respostaErradaTres
     ])
-    console.log(data)
 
     const alternativaCorreta:string | undefined = organizarQuestao(dataShuffle, data.respostaCorreta)
-    console.log(alternativaCorreta)
 
     setAlternativas(dataShuffle)
     if (alternativaCorreta !== undefined) {
@@ -127,6 +128,10 @@ const Questao = () => {
 
   useEffect(() => {
 
+    if(nome === undefined || nome === null){
+      navigate('/')
+    }
+
     fetchQuestion()
 
   }, []);
@@ -141,22 +146,22 @@ const Questao = () => {
   return (
     <Main>
       <p>Pontuação: {pontuacao}</p>
-      <p id='titulo'>{questao && questao.texto}</p>
+      <p id='titulo'>{questao.texto || <Skeleton width={700} />}</p>
       <p
         id='a'
         className={click ? (correta === 'a' ? 'correta' : 'errada') : 'alternativa'}
         onClick={(e) => handlePergunta(e)}
       >
-        A) {alternativas && alternativas[0]}
+        A) {alternativas[0] || <Skeleton width={300} />}
       </p>
-      <p id='b' className={click ? (correta === 'b' ? 'correta' : 'errada' ) : 'alternativa'}onClick={(e) => handlePergunta(e)}>
-        B) {alternativas && alternativas[1]}
+      <p id='b' className={click ? (correta === 'b' ? 'correta' : 'errada' ) : 'alternativa'} onClick={(e) => handlePergunta(e)}>
+        B) {alternativas[1] || <Skeleton width={300} />}
       </p>
       <p id='c' className={click ? (correta === 'c' ? 'correta' : 'errada' ) : 'alternativa'}onClick={(e) => handlePergunta(e)}>
-        C) {alternativas && alternativas[2]}
+        C) {alternativas[2] || <Skeleton width={300} />}
       </p>
       <p id='d' className={click ? (correta === 'd' ? 'correta' : 'errada' ) : 'alternativa'}onClick={(e) => handlePergunta(e)}>
-        D) {alternativas && alternativas[3]}
+        D) {alternativas[3] || <Skeleton width={300} />}
       </p>
       </Main>
   );
