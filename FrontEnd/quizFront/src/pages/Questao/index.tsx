@@ -20,7 +20,7 @@ const Questao = () => {
   const [alternativas, setAlternativas] = useState<string[]>([])
 
   function shuffle(array:string[]) {
-    var m = array.length, t, i;
+    let m = array.length, t, i;
   
     // While there remain elements to shuffle…
     while (m) {
@@ -81,16 +81,20 @@ const Questao = () => {
       pontos: pontuacao
     }
 
-    try{
-      await fetch('https://backend-quiz-7j7n.onrender.com/usuario',{
-        method:"POST",
-        headers:{
-          'Content-Type':'application/json'
+    try {
+      await fetch('https://backend-quiz-7j7n.onrender.com/usuario', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
-      })
-    }catch(error:any){
-      console.error('Ocorreu um erro:', error.message);
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Ocorreu um erro:', error.message);
+      } else {
+        console.error('Ocorreu um erro desconhecido.');
+      }
     }
   }
 
