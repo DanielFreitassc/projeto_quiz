@@ -5,11 +5,14 @@ import { usePontuacao } from '../../context/pontuacaoContext';
 import { useMessage } from '../../context/mensagemContext';
 import { useNome } from '../../context/nomeContext';
 
+interface QuestaoInterface {
+  texto:string
+}
 
 const Questao = () => {
   const { pontuacao, aumentarPontuacao, setPontuacao } = usePontuacao();
   const [correta, setCorreta] = useState('')
-  const [questao, setQuestao] = useState({});
+  const [questao, setQuestao] = useState<QuestaoInterface>({texto:""});
   const navigate = useNavigate();
   const [click, setClick] = useState(false);
   const { setMessage } = useMessage();
@@ -62,11 +65,13 @@ const Questao = () => {
     ])
     console.log(data)
 
-    const alternativaCorreta = organizarQuestao(dataShuffle, data.respostaCorreta)
+    const alternativaCorreta:string | undefined = organizarQuestao(dataShuffle, data.respostaCorreta)
     console.log(alternativaCorreta)
 
     setAlternativas(dataShuffle)
-    setCorreta(alternativaCorreta)
+    if (alternativaCorreta !== undefined) {
+      setCorreta(alternativaCorreta)
+    }
     setQuestao(data);
   };
 
@@ -84,7 +89,7 @@ const Questao = () => {
         },
         body: JSON.stringify(user)
       })
-    }catch(error){
+    }catch(error:any){
       console.error('Ocorreu um erro:', error.message);
     }
   }
