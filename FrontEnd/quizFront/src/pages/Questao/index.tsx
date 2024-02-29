@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import { usePontuacao } from '../../context/pontuacaoContext';
 import { useMessage } from '../../context/mensagemContext';
 import { useNome } from '../../context/nomeContext';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'
+
 
 interface QuestaoInterface {
   texto:string
@@ -20,7 +23,7 @@ const Questao = () => {
   const [alternativas, setAlternativas] = useState<string[]>([])
 
   function shuffle(array:string[]) {
-    var m = array.length, t, i;
+    let m = array.length, t, i;
   
     // While there remain elements to shuffle…
     while (m) {
@@ -63,10 +66,8 @@ const Questao = () => {
 
     const dataShuffle = shuffle([data.respostaCorreta, data.respostaErradaUm,data.respostaErradaDois, data.respostaErradaTres
     ])
-    console.log(data)
 
     const alternativaCorreta:string | undefined = organizarQuestao(dataShuffle, data.respostaCorreta)
-    console.log(alternativaCorreta)
 
     setAlternativas(dataShuffle)
     if (alternativaCorreta !== undefined) {
@@ -81,16 +82,20 @@ const Questao = () => {
       pontos: pontuacao
     }
 
-    try{
-      await fetch('https://backend-quiz-7j7n.onrender.com/usuario',{
-        method:"POST",
-        headers:{
-          'Content-Type':'application/json'
+    try {
+      await fetch('https://backend-quiz-7j7n.onrender.com/usuario', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
-      })
-    }catch(error:any){
-      console.error('Ocorreu um erro:', error.message);
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Ocorreu um erro:', error.message);
+      } else {
+        console.error('Ocorreu um erro desconhecido.');
+      }
     }
   }
 
@@ -123,6 +128,10 @@ const Questao = () => {
 
   useEffect(() => {
 
+    if(nome === undefined || nome === null){
+      navigate('/')
+    }
+
     fetchQuestion()
 
   }, []);
@@ -137,22 +146,22 @@ const Questao = () => {
   return (
     <Main>
       <p>Pontuação: {pontuacao}</p>
-      <p id='titulo'>{questao && questao.texto}</p>
+      <p id='titulo'>{questao.texto || <Skeleton className='skeleton-title' />}</p>
       <p
         id='a'
         className={click ? (correta === 'a' ? 'correta' : 'errada') : 'alternativa'}
         onClick={(e) => handlePergunta(e)}
       >
-        A) {alternativas && alternativas[0]}
+        A) {alternativas[0] || <Skeleton className='loading'/>}
       </p>
-      <p id='b' className={click ? (correta === 'b' ? 'correta' : 'errada' ) : 'alternativa'}onClick={(e) => handlePergunta(e)}>
-        B) {alternativas && alternativas[1]}
+      <p id='b' className={click ? (correta === 'b' ? 'correta' : 'errada' ) : 'alternativa'} onClick={(e) => handlePergunta(e)}>
+        B) {alternativas[1] || <Skeleton className='loading' />}
       </p>
       <p id='c' className={click ? (correta === 'c' ? 'correta' : 'errada' ) : 'alternativa'}onClick={(e) => handlePergunta(e)}>
-        C) {alternativas && alternativas[2]}
+        C) {alternativas[2] || <Skeleton className='loading' />}
       </p>
       <p id='d' className={click ? (correta === 'd' ? 'correta' : 'errada' ) : 'alternativa'}onClick={(e) => handlePergunta(e)}>
-        D) {alternativas && alternativas[3]}
+        D) {alternativas[3] || <Skeleton className='loading' />}
       </p>
       </Main>
   );
@@ -191,6 +200,14 @@ const Main = styled.main`
     background-color: #ccc;
   }
 
+  .skeleton-title{
+    width: 13em;
+  }
+
+  .loading{
+    width: 9em;
+  }
+
   @media screen and (max-width: 490px) {
     * {
       width: 14em;
@@ -199,6 +216,12 @@ const Main = styled.main`
 
     #titulo {
       font-size: 1.3em;
+    }
+  }
+
+  @media (max-width:900px){
+    .loading{
+      width: 100;
     }
   }
 `;

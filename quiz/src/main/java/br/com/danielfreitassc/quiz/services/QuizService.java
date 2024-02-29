@@ -22,7 +22,7 @@ public class QuizService {
     }
 
     public PerguntaEntity buscarPerguntaAleatoria() {
-        long randomId = (long) (Math.random() * 50) + 1;
+        long randomId = (long) (Math.random() * 100) + 1;
         Optional<PerguntaEntity> perguntaOptional = perguntaRepository.findById(randomId);
         return perguntaOptional.orElse(new PerguntaEntity());
     }
