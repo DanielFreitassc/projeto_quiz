@@ -2,10 +2,15 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 
+interface Rankingtype {
+  id:number,
+  nome:string,
+  pontos: number
+}
 
 const LeaderBoard = () => {
 
-  const [ranking, setRanking] = useState([])
+  const [ranking, setRanking] = useState<Rankingtype[]>([])
 
   useEffect(() => {
     const fetchUser = async() => {
