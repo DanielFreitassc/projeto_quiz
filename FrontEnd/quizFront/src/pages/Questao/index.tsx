@@ -146,22 +146,22 @@ const Questao = () => {
   return (
     <Main>
       <p>Pontuação: {pontuacao}</p>
-      <p id='titulo'>{questao.texto || <Skeleton width={700} />}</p>
+      <p id='titulo'>{questao.texto || <Skeleton className='skeleton-title' />}</p>
       <p
         id='a'
         className={click ? (correta === 'a' ? 'correta' : 'errada') : 'alternativa'}
         onClick={(e) => handlePergunta(e)}
       >
-        A) {alternativas[0] || <Skeleton width={300} />}
+        A) {alternativas[0] || <Skeleton className='loading'/>}
       </p>
       <p id='b' className={click ? (correta === 'b' ? 'correta' : 'errada' ) : 'alternativa'} onClick={(e) => handlePergunta(e)}>
-        B) {alternativas[1] || <Skeleton width={300} />}
+        B) {alternativas[1] || <Skeleton className='loading' />}
       </p>
       <p id='c' className={click ? (correta === 'c' ? 'correta' : 'errada' ) : 'alternativa'}onClick={(e) => handlePergunta(e)}>
-        C) {alternativas[2] || <Skeleton width={300} />}
+        C) {alternativas[2] || <Skeleton className='loading' />}
       </p>
       <p id='d' className={click ? (correta === 'd' ? 'correta' : 'errada' ) : 'alternativa'}onClick={(e) => handlePergunta(e)}>
-        D) {alternativas[3] || <Skeleton width={300} />}
+        D) {alternativas[3] || <Skeleton className='loading' />}
       </p>
       </Main>
   );
@@ -200,6 +200,14 @@ const Main = styled.main`
     background-color: #ccc;
   }
 
+  .skeleton-title{
+    width: 13em;
+  }
+
+  .loading{
+    width: 9em;
+  }
+
   @media screen and (max-width: 490px) {
     * {
       width: 14em;
@@ -208,6 +216,12 @@ const Main = styled.main`
 
     #titulo {
       font-size: 1.3em;
+    }
+  }
+
+  @media (max-width:900px){
+    .loading{
+      width: 100;
     }
   }
 `;
